@@ -57,8 +57,28 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
+  <!-- Inputting code below: idea being we listen for when a key is pressed down, then we identify if the key is one of the ones above using a queryselector  -->
+  <!-- Next we need to identify the key so that we can visibly show which button is being pressed on the page -->
 <script>
+  
+  const playSound = (e) => {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`); //the .key is selecting a div="key"
 
+    if(!audio) return; // stops the function altogether
+    audio.currentTime = 0; // this allows us to play the key over and over again without waiting for the audio to finish. Rewinding it, as such. 
+    audio.play();
+    key.classList.add('playing'); // this adds the .playing css property to the keys
+  }
+
+ function removeTransition(e) {
+    if (e.propertyName !== 'transform') return; // this skips the transition if its not a transform. 
+    this.classList.remove('playing'); //removes the playing class and hence the yellow border. 
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)); // we need to reverse the transition so upon the transition end we call the removeTransition function. 
+  window.addEventListener('keydown', playSound);
 </script>
 
 
