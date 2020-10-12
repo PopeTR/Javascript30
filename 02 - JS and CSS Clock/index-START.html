@@ -62,12 +62,34 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%; /* this means the item will pivot at the far right point */
+      transform: rotate(90deg); /* moving the hand from pm to 12 */
+      transition: all 0.05s; /* the transforming function */
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); /* this makes the hand move in the correct format you wish */
+
     }
 
   </style>
-
+    
   <script>
+    const secondHand = document.querySelector('.second-hand'); /* is the second hand selector */
+    const minHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+    function setDate() {
+      const now = new Date();
+      const seconds = now.getSeconds(); /* getting seconds of every moment */
+      const minutes = now.getMinutes();
+      const hours = now.getHours();
+      const secondsDegrees = ((seconds / 60) * 360) + 90; /* Getting the right degrees for each second */
+      const minutesDegrees = ((minutes / 60) * 360) + 90;
+      const hoursDegrees = ((hours / 60) * 360) + 90;
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`; 
+      minHand.style.transform = `rotate(${minutesDegrees}deg)`;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+      console.log(seconds)
+    }
 
+    setInterval(setDate, 1000)
 
   </script>
 </body>
